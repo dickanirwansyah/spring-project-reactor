@@ -15,6 +15,6 @@ import javax.validation.constraints.NotBlank;
 public class GetCartDetailRequest implements ServiceRequest{
 
     @NotBlank
-    @CartMustExists
+    //@CartMustExists
     private String cartId;
 }

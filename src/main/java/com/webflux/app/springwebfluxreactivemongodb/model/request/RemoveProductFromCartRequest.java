@@ -14,15 +14,15 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ProductMustExistsInCart(path = "productId")
-public class RemoveProductFromCartRequest implements ServiceRequest,
-        ProductMustExistsInCart.productInCart {
+//@ProductMustExistsInCart(path = "productId")
+public class RemoveProductFromCartRequest implements ServiceRequest{
+        //ProductMustExistsInCart.productInCart {
 
     @NotBlank
-    @CartMustExists
+    //@CartMustExists
     private String cartId;
 
     @NotBlank
-    @ProductMustExists
+    //@ProductMustExists
     private String productId;
 }

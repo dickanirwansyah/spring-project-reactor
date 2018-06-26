@@ -6,10 +6,12 @@ import com.webflux.app.springwebfluxreactivemongodb.model.controller.Response;
 import com.webflux.app.springwebfluxreactivemongodb.model.request.AddProductToCartRequest;
 import com.webflux.app.springwebfluxreactivemongodb.model.request.CreateNewCartRequest;
 import com.webflux.app.springwebfluxreactivemongodb.model.request.GetCartDetailRequest;
+import com.webflux.app.springwebfluxreactivemongodb.model.request.RemoveProductFromCartRequest;
 import com.webflux.app.springwebfluxreactivemongodb.service.ServiceExecutor;
 import com.webflux.app.springwebfluxreactivemongodb.service.command.AddProductToCartCommand;
 import com.webflux.app.springwebfluxreactivemongodb.service.command.CreateNewCartCommand;
 import com.webflux.app.springwebfluxreactivemongodb.service.command.GetCartDetailCommand;
+import com.webflux.app.springwebfluxreactivemongodb.service.command.RemoveProductFromCartCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -41,6 +43,21 @@ public class CartController {
                 .build();
 
         return serviceExecutor.execute(GetCartDetailCommand.class, request)
+                .map(Response::ok)
+                .subscribeOn(Schedulers.elastic());
+    }
+
+    @DeleteMapping(value = "/{cartId}/{productId}")
+    public Mono<Response<Cart>> removeProduct(@PathVariable("cartId")String cartId,
+                                              @PathVariable("productId")String productId){
+
+        RemoveProductFromCartRequest request = RemoveProductFromCartRequest
+                .builder()
+                .cartId(cartId)
+                .productId(productId)
+                .build();
+
+        return serviceExecutor.execute(RemoveProductFromCartCommand.class, request)
                 .map(Response::ok)
                 .subscribeOn(Schedulers.elastic());
     }
